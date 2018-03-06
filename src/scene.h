@@ -23,7 +23,7 @@ class scene {
     float lookat[3];
     float up[3];
     float angle;
-    //surf vector
+    int samples;
     pixel* data;
     std::vector<light> lights;
     std::vector<surface> surf;

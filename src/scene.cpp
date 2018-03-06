@@ -164,6 +164,13 @@ void scene::acquireData(std::string name){
           surf.push_back(spTemp);
         }
       break;
+      case 's':
+        iss >> this->samples;
+      break;
+      default:
+        std::cout << "input file malformed" << std::endl;
+        exit(EXIT_FAILURE);
+      break;
     }
   }
 }

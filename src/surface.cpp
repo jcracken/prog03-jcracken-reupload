@@ -6,6 +6,7 @@ surface::surface(){
   this->specular = new color();
   this->phong = 0.0;
   this->pos = [0.0 0.0 0.0];
+  this->type = false;
 }
 
 color surface::getAmbient(){
@@ -48,4 +49,8 @@ void surface::setPos(float* pos){
   this->pos[0] = pos[0];
   this->pos[1] = pos[1];
   this->pos[2] = pos[2];
+}
+
+bool surface::isSphere(){
+  return this->type;
 }

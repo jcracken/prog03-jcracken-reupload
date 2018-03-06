@@ -10,6 +10,7 @@ class surface {
     color specular;
     float phong;
     float pos[3];
+    bool type;
   public:
     surface();
     color getAmbient();
@@ -22,4 +23,5 @@ class surface {
     void setSpecular(color specular);
     void setPhong(float phong);
     void setPos(float* pos);
+    bool isSphere();
 }

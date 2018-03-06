@@ -29,16 +29,16 @@ float* surface::getPos(){
   return this->pos;
 }
 
-void surface::setAmbient(color ambient){
-  this->ambient = ambient;
+void surface::setAmbient(float* ambient){
+  this->ambient.setColor(ambient);
 }
 
-void surface::setDiffuse(color diffuse){
-  this->diffuse = diffuse;
+void surface::setDiffuse(float* diffuse){
+  this->diffuse.setColor(diffuse);
 }
 
-void surface::setSpecular(color specular){
-  this->specular = specular;
+void surface::setSpecular(float* specular){
+  this->specular.setColor(specular);
 }
 
 void surface::setPhong(float phong){

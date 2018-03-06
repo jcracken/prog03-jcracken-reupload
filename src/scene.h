@@ -3,6 +3,12 @@
 
 #include "pixel.h"
 #include "color.h"
+#include "light.h"
+#include "sphere.h"
+#include "plane.h"
+#include "surface.h"
+#include "ray.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -19,6 +25,8 @@ class scene {
     float angle;
     //surf vector
     pixel* data;
+    std::vector<light> lights;
+    std::vector<surface> surf;
   public:
     scene();
     unsigned char* returnData();
@@ -29,4 +37,5 @@ class scene {
     float* returnUp();
     float returnAngle();
     void acquireData(std::string name);
+    void makeData();
 }

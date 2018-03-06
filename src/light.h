@@ -10,7 +10,7 @@ class light {
   public:
     light();
     void setLoc(float* loc);
-    void setCol(color col);
+    void setCol(float* col);
     float getLoc();
     color getCol();
 }

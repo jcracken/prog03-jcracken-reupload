@@ -3,11 +3,11 @@
 
 class color {
   private:
-    unsigned char arr[3];
+    float arr[3];
   public:
     color();
     color( const color &obj );
-    unsigned char* getColor();
-    void setColor(unsigned char* color);
+    float* getColor();
+    void setColor(float* color);
 };
 #endif

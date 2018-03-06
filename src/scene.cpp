@@ -9,12 +9,16 @@ scene::scene(){
   this->angle = 0.0;
 }
 
-unsigned char* scene::returnData(){
+float* scene::returnData(){
   int i, j;
-  unsigned char* returnData = new unsigned char[height][width];
+  float* returnData = new float[height][3 * width];
+  flaot* temp[3];
   for(i = 0; i < this->height; i++){
-    for(j = 0; j < this->width; j++){
-      returnData[i][j] = this->data[i][j]->getColor();
+    for(j = 0; j < this->width; j = j + 3){
+      temp = this->data[i][j]->getColor();
+      returnData[i][j] = temp[0];
+      returnData[i][j + 1] = temp[1];
+      returnData[i][j + 2] = temp[3];
     }
   }
   return returnData;
@@ -49,6 +53,13 @@ void scene::acquireData(std::string name){
   std::string parse;
   bool follow = false;
   char type = '\0';
+
+  light lTemp = new light();
+  sphere spTemp = new sphere();
+  plane pTemp = new plane();
+
+  float temp[3];
+  int line = 0;
   //verifies file existence
   if(!(input.is_open())){
     std::cout << "File not found; try excluding the filename extension" << std::endl;
@@ -85,14 +96,90 @@ void scene::acquireData(std::string name){
         iss >> height;
       break;
       case 'L':
-        //lights
-      break;
-      case 'S':
-        //sphere
+        iss >> temp[0];
+        iss >> temp[1];
+        iss >> temp[2];
+        if(!follow){
+          lTemp.setLoc(temp);
+        } else {
+          lTemp.setCol(temp);
+          lights.push_back(lTemp);
+        }
       break;
       case 'P':
-        //plane
+        iss >> temp[0];
+        if(line != 4) {
+          iss >> temp[1];
+          iss >> temp[2];
+        }
+        if(!follow){
+          pTemp.setPos(temp);
+          iss >> temp[0];
+          iss >> temp[1];
+          iss >> temp[2];
+          pTemp.setNormal(temp);
+          line = 1;
+        } else {
+          if(line == 1){
+            pTemp.setAmbient(temp);
+            line = 2;
+          } else if (line == 2){
+            pTemp.setDiffuse(temp);
+            line = 3;
+          } else if (line == 3){
+            pTemp.setSpecular(temp);
+            line = 4;
+          } else {
+            pTemp.setPhong(temp[0]);
+            line = 0;
+          }
+          surf.push_back(pTemp);
+        }
       break;
+      case 'S':
+        iss >> temp[0];
+        if(line != 4) {
+          iss >> temp[1];
+          iss >> temp[2];
+        }
+        if(!follow){
+          spTemp.setPos(temp);
+          iss >> temp[0];
+          spTemp.setRadius(temp[0]);
+          line = 1;
+        } else {
+          if(line == 1){
+            spTemp.setAmbient(temp);
+            line = 2;
+          } else if (line == 2){
+            spTemp.setDiffuse(temp);
+            line = 3;
+          } else if (line == 3){
+            spTemp.setSpecular(temp);
+            line = 4;
+          } else {
+            spTemp.setPhong(temp[0]);
+            line = 0;
+          }
+          surf.push_back(spTemp);
+        }
+      break;
+    }
+  }
+}
+
+void scene::makeData(){
+  this->data = new pixel[this->height][this->width];
+  int i, j;
+
+  for(i = 0; i < this->height; i++){
+    for(j = 0; j < this->width; j++){
+      //send ray for this pixel
+
+      //calculate collision
+
+      //calculate color
+
     }
   }
 }

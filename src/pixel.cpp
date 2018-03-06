@@ -4,10 +4,10 @@ pixel::pixel(){
   this->pixColor = new color();
 }
 
-unsigned char* pixel::getColor(){
+float* pixel::getColor(){
   return this->pixColor->getColor();
 }
 
-void pixel::setColor(unsigned char* color){
+void pixel::setColor(float* color){
   this->pixColor->setColor(color);
 }

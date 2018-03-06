@@ -6,11 +6,13 @@ light::light(){
 }
 
 void light::setLoc(float* loc){
-  this->loc = loc;
+  this->loc[0] = loc[0];
+  this->loc[1] = loc[1];
+  this->loc[2] = loc[2];
 }
 
-void light::setCol(color col){
-  this->col = col;
+void light::setCol(float* col){
+  this->col.setColor(col);
 }
 
 float light::getLoc(){

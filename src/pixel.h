@@ -8,7 +8,7 @@ class pixel {
     color pixColor;
   public:
     pixel();
-    unsigned char* getColor();
-    void setColor(unsigned char* color);
+    float* getColor();
+    void setColor(float* color);
 };
 #endif

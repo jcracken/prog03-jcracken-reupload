@@ -6,6 +6,7 @@ class color {
     unsigned char arr[3];
   public:
     color();
+    color( const color &obj );
     unsigned char* getColor();
     void setColor(unsigned char* color);
 };

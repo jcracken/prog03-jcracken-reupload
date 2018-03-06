@@ -4,6 +4,10 @@ color::color(){
   this->arr = [0 0 0];
 }
 
+color::color(const color &obj){
+  this->arr = *obj.arr;
+}
+
 unsigned char* color::getColor(){
   return this->arr;
 }

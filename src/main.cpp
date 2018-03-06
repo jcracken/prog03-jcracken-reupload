@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "pixel.h"
 #include "ray.h"
+#include "ppm.h"
 
 //C++ includes
 #include <iostream>
@@ -42,6 +43,10 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 }
 
 int main(int argc, char** argv){
+
+  ppm* image = new ppm();
+
+  //populate ppm
 
   //Start up SDL and make sure it went ok
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -138,6 +143,12 @@ int main(int argc, char** argv){
 	SDL_DestroyRenderer(rendererImage);
 	SDL_DestroyWindow(windowImage);
 	SDL_Quit();
+
+  //write data to a SDR ppm
+	image->writeData(argv[2]);
+
+	//clear memory
+	delete image;
 
   return 0;
 }

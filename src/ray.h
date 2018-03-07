@@ -3,14 +3,17 @@
 
 class ray {
   private:
-    int origin[3];
-    int direction[3];
+    float origin[3];
+    float direction[3];
+    float t;
   public:
     ray();
-    int* getOrigin();
-    int* getDirection();
-    void setOrigin(int* origin);
-    void setDirection(int* direction);
-    boolean detectCollision(int* goal);
+    float* getOrigin();
+    float* getDirection();
+    void setOrigin(float* origin);
+    void setDirection(float* direction);
+    float getT();
+    void setT(float t);
+    float dotProduct(float* r0, float* r1);
 };
 #endif

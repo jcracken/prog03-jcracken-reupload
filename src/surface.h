@@ -2,6 +2,7 @@
 #define SURFACE_H
 
 #include "color.h"
+#include "ray.h"
 
 class surface {
   private:
@@ -24,4 +25,5 @@ class surface {
     void setPhong(float phong);
     void setPos(float* pos);
     bool isSphere();
+    bool detectCollision(ray inter);
 }

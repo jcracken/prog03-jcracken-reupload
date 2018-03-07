@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <string>
+#include <math>
 
 class scene {
   private:
@@ -27,6 +28,7 @@ class scene {
     pixel* data;
     std::vector<light> lights;
     std::vector<surface> surf;
+    std::vector<ray> rays;
   public:
     scene();
     unsigned char* returnData();

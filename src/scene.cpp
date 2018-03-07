@@ -132,8 +132,8 @@ void scene::acquireData(std::string name){
           } else {
             pTemp.setPhong(temp[0]);
             line = 0;
+            surf.push_back(pTemp);
           }
-          surf.push_back(pTemp);
         }
       break;
       case 'S':
@@ -160,8 +160,9 @@ void scene::acquireData(std::string name){
           } else {
             spTemp.setPhong(temp[0]);
             line = 0;
+            spTemp.setType();
+            surf.push_back(spTemp);
           }
-          surf.push_back(spTemp);
         }
       break;
       case 's':
@@ -172,17 +173,28 @@ void scene::acquireData(std::string name){
         exit(EXIT_FAILURE);
       break;
     }
+    input.close();
   }
 }
 
 void scene::makeData(){
   this->data = new pixel[this->height][this->width];
   int i, j;
+  float temp[3];
+  float eye[3] = this->eye;
+  float lookat[3] = this->lookat;
+  float up[3] = this->up;
+  float dist = powf((powf(eye[0] - lookat[0], 2) + (powf(eye[1] - lookat[1], 2) + (powf(eye[2] - lookat[2], 2)), 0.5);
 
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->width; j++){
       //send ray for this pixel
-
+      ray rTemp = new ray();
+      ray.setOrigin(eye);
+      temp[0] = (-1 * dist * ) + (i * ) + (j * );
+      temp[1] = (-1 * dist * ) + (i * ) + (j * );
+      temp[2] = (-1 * dist * ) + (i * ) + (j * );
+      ray.setDirection(temp);
       //calculate collision
 
       //calculate color

@@ -54,3 +54,5 @@ void surface::setPos(float* pos){
 bool surface::isSphere(){
   return this->type;
 }
+
+bool detectCollision(ray inter);

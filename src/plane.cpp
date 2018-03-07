@@ -12,19 +12,19 @@ void plane::setNormal(float* normal){
 
 bool detectCollision(ray inter){
   float temp[3];
-  float origin[3] = inter.getOrigin();
-  float direction[3] = inter.getDirection();
+  float origin[3] = inter->getOrigin();
+  float direction[3] = inter->getDirection();
   float point[3] = this->pos;
   float t, denom;
 
-  denom = inter.dotProduct(this->normal, direction);
+  denom = inter->dotProduct(this->normal, direction);
   if(denom > 0.0000001){
     temp[0] = pos[0] - origin[0];
     temp[1] = pos[1] - origin[1];
     temp[2] = pos[2] - origin[2];
-    t = inter.dotProduct(temp, this->normal) / denom;
+    t = inter->dotProduct(temp, this->normal) / denom;
     if(t >= 0){
-      inter.setT(t);
+      inter->setT(t);
       return true;
     }
   }

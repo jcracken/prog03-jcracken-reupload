@@ -179,24 +179,38 @@ void scene::acquireData(std::string name){
 
 void scene::makeData(){
   this->data = new pixel[this->height][this->width];
-  int i, j;
+  int i, j, k;
   float temp[3];
   float eye[3] = this->eye;
   float lookat[3] = this->lookat;
   float up[3] = this->up;
   float dist = powf((powf(eye[0] - lookat[0], 2) + (powf(eye[1] - lookat[1], 2) + (powf(eye[2] - lookat[2], 2)), 0.5);
+  if(up[0] > 0.0){
+    float w[3] = [0 0 -1];
+    float u[3] = [0 1 0];
+  } else if (up[1] > 0.0){
+    float w[3] = [0 0 -1];
+    float u[3] = [1 0 0];
+  } else {
+    float w[3] = [0 -1 0];
+    float u[3] = [1 0 0];
+  }
 
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->width; j++){
       //send ray for this pixel
       ray rTemp = new ray();
-      ray.setOrigin(eye);
-      temp[0] = (-1 * dist * ) + (i * ) + (j * );
-      temp[1] = (-1 * dist * ) + (i * ) + (j * );
-      temp[2] = (-1 * dist * ) + (i * ) + (j * );
-      ray.setDirection(temp);
+      rTemp.setOrigin(eye);
+      temp[0] = (-1 * dist * w[0]) + (i * u[0]) + (j * up[0]);
+      temp[1] = (-1 * dist * w[1]) + (i * u[1]) + (j * up[1]);
+      temp[2] = (-1 * dist * w[2]) + (i * u[2]) + (j * up[2]);
+      rTemp.setDirection(temp);
       //calculate collision
-
+      for(k = 0; k < surf.size(); k++){
+        if(surf.at(k).detectCollison(&rTemp)){
+          //STUFF
+        }
+      }
       //calculate color
 
     }

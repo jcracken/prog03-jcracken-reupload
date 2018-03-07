@@ -25,5 +25,5 @@ class surface {
     void setPhong(float phong);
     void setPos(float* pos);
     bool isSphere();
-    bool detectCollision(ray inter);
+    bool detectCollision(ray* inter);
 }

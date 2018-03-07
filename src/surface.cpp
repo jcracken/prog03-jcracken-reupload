@@ -55,4 +55,4 @@ bool surface::isSphere(){
   return this->type;
 }
 
-bool detectCollision(ray inter);
+bool detectCollision(ray* inter);

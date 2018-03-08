@@ -23,7 +23,7 @@ bool detectCollision(ray inter){
     temp[1] = pos[1] - origin[1];
     temp[2] = pos[2] - origin[2];
     t = inter->dotProduct(temp, this->normal) / denom;
-    if(t >= 0){
+    if(t >= 0 && t <= inter->getT()){
       inter->setT(t);
       return true;
     }

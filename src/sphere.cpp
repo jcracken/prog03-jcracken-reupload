@@ -46,8 +46,9 @@ bool detectCollision(ray* inter){
     t0 = t1;
     if(t0 < 0) return false;
   }
-
-  inter->setT(t0);
-
-  return true;
+  if(t0 <= inter->getT()){
+    inter->setT(t0);
+    return true;
+  }
+  return false;
 }

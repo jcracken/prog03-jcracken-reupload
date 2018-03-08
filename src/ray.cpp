@@ -41,3 +41,13 @@ void ray::setT(float t){
 float ray::dotProduct(float* r0, float* r1){
   return (r0[0]*r1[0] + r0[1]*r1[1] + r0[2]*r1[2]);
 }
+
+float* ray::crossProduct(float* r0, float* r1){
+  float temp[3];
+
+  temp[0] = r0[1] * r1[2] - r1[1] * r0[2];
+  temp[1] = r1[0] * r0[2] - r0[0] * r1[2];
+  temp[2] = r0[0] * r1[1] - r1[0] * r0[1];
+
+  return temp;
+}

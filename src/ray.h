@@ -15,5 +15,6 @@ class ray {
     float getT();
     void setT(float t);
     float dotProduct(float* r0, float* r1);
+    float* crossProduct(float* r0, float* r1);
 };
 #endif

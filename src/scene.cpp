@@ -219,16 +219,20 @@ void scene::makeData(){
   this->data = new pixel*[this->height];
   int i, j, k, loc;
   float temp[3];
-  float w[3] = {0};
-  float u[3] = {0};
-  float v[3] = {0};
+  float *w, *u, *v;
+  ray r = ray();
 
   //calculate u, v, w
-  for(i = 0; i < 3 i++){
-    if(up[i] = 0) v[i] = eye[i];
-    else v[i] = up[i];
-    w[i] = this->lookat[i] * -1.0;
-  }
+  w[0] = -1.0 * this->lookat[0] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
+  w[1] = -1.0 * this->lookat[1] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
+  w[2] = -1.0 * this->lookat[2] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
+
+  u = r.crossProduct((float*)this->up, w);
+  u[0] = u[0] / sqrt(powf(u[0],2) + powf(u[1],2) + powf(u[2],2));
+  u[1] = u[1] / sqrt(powf(u[0],2) + powf(u[1],2) + powf(u[2],2));
+  u[2] = u[2] / sqrt(powf(u[0],2) + powf(u[1],2) + powf(u[2],2));
+
+  v = r.crossProduct(w, u);
 
   float dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
 

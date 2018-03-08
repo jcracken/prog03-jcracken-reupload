@@ -179,7 +179,7 @@ void scene::acquireData(std::string name){
 
 void scene::makeData(){
   this->data = new pixel[this->height][this->width];
-  int i, j, k;
+  int i, j, k, loc;
   float temp[3];
   float eye[3] = this->eye;
   float lookat[3] = this->lookat;
@@ -208,11 +208,11 @@ void scene::makeData(){
       //calculate collision
       for(k = 0; k < surf.size(); k++){
         if(surf.at(k).detectCollison(&rTemp)){
-          //STUFF
+          loc = k;
         }
       }
       //calculate color
-
+      //do stuff with surf at loc
     }
   }
 }

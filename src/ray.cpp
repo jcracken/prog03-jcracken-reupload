@@ -1,8 +1,12 @@
 #include "ray.h"
 
 ray::ray(){
-  this->origin = [0 0 0];
-  this->direction = [0 0 0];
+  this->origin[0] = 0;
+  this->origin[1] = 0;
+  this->origin[2] = 0;
+  this->direction[0] = 0;
+  this->direction[1] = 0;
+  this->direction[2] = 0;
   this->t = 0.0;
 }
 
@@ -34,6 +38,6 @@ void ray::setT(float t){
   this->t = t;
 }
 
-float dotProduct(float* r0, float* r1){
+float ray::dotProduct(float* r0, float* r1){
   return (r0[0]*r1[0] + r0[1]*r1[1] + r0[2]*r1[2]);
 }

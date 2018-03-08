@@ -1,8 +1,10 @@
 #include "light.h"
 
 light::light(){
-  this->loc = [0.0 0.0 0.0];
-  this->col = new color();
+  this->loc[0] = 0.0;
+  this->loc[1] = 0.0;
+  this->loc[2] = 0.0;
+  this->col = color();
 }
 
 void light::setLoc(float* loc){
@@ -16,7 +18,7 @@ void light::setCol(float* col){
 }
 
 float light::getLoc(){
-  return this->loc;
+  return *this->loc;
 }
 
 color light::getCol(){

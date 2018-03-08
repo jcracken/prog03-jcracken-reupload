@@ -14,7 +14,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <string>
-#include <math>
+#include <math.h>
+#include <vector>
 
 class scene {
   private:
@@ -25,18 +26,18 @@ class scene {
     float up[3];
     float angle;
     int samples;
-    pixel* data;
+    pixel** data;
     std::vector<light> lights;
     std::vector<surface> surf;
     std::vector<ray> rays;
   public:
     scene();
-    unsigned char* returnData();
     int returnWidth();
     int returnHeight();
     float* returnEye();
     float* returnLookAt();
     float* returnUp();
+    float** returnData();
     float returnAngle();
     void acquireData(std::string name);
     void makeData();

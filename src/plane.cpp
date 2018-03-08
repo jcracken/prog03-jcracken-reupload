@@ -10,18 +10,15 @@ void plane::setNormal(float* normal){
   this->normal[2] = normal[2];
 }
 
-bool detectCollision(ray inter){
+bool plane::detectCollision(ray* inter){
   float temp[3];
-  float origin[3] = inter->getOrigin();
-  float direction[3] = inter->getDirection();
-  float point[3] = this->pos;
   float t, denom;
 
-  denom = inter->dotProduct(this->normal, direction);
+  denom = inter->dotProduct(this->normal, inter->getDirection());
   if(denom > 0.0000001){
-    temp[0] = pos[0] - origin[0];
-    temp[1] = pos[1] - origin[1];
-    temp[2] = pos[2] - origin[2];
+    temp[0] = this->pos[0] - inter->getOrigin()[0];
+    temp[1] = this->pos[1] - inter->getOrigin()[1];
+    temp[2] = this->pos[2] - inter->getOrigin()[2];
     t = inter->dotProduct(temp, this->normal) / denom;
     if(t >= 0 && t <= inter->getT()){
       inter->setT(t);

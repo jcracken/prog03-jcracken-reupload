@@ -9,5 +9,6 @@ class plane: public surface {
   public:
     float* getNormal();
     void setNormal(float* normal);
+    bool detectCollision(ray* inter);
 };
 #endif

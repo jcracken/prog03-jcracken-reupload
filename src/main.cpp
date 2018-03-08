@@ -133,8 +133,8 @@ int main(int argc, char** argv){
     const double seconds = ( end - start ) / static_cast< double >( freq );
 
     //You may want to comment this line out for debugging purposes
-    cout << "Frame time: " << seconds * 1000.0 << "ms" << endl;
-		cout << "Gamma: " << gamma << endl;
+    std::cout << "Frame time: " << seconds * 1000.0 << "ms" << std::endl;
+		std::cout << "Gamma: " << gamma << std::endl;
   }
 
   //After the loop finishes (when the window is closed, or escape is

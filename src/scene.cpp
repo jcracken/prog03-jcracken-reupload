@@ -3,22 +3,33 @@
 scene::scene(){
   this->width = 0;
   this->height = 0;
-  this->eye = [0.0 0.0 0.0];
-  this->lookat = [0.0 0.0 0.0];
-  this->up = [0.0 0.0 0.0];
+  this->eye[0] = 0.0;
+  this->eye[1] = 0.0;
+  this->eye[2] = 0.0;
+  this->lookat[0] = 0.0;
+  this->lookat[1] = 0.0;
+  this->lookat[2] = 0.0;
+  this->up[0] = 0.0;
+  this->up[1] = 0.0;
+  this->up[2] = 0.0;
   this->angle = 0.0;
 }
 
-float* scene::returnData(){
-  int i, j;
-  float* returnData = new float[height][3 * width];
-  flaot* temp[3];
+float** scene::returnData(){
+  int i, j, a = 0, b = 0;
+  float** returnData;
+  returnData = new float*[this->height];
+  for (i = 0; i < height; i++)
+    returnData[i] = new float[3 * this->width];
+  float* temp;
   for(i = 0; i < this->height; i++){
-    for(j = 0; j < this->width; j = j + 3){
-      temp = this->data[i][j]->getColor();
-      returnData[i][j] = temp[0];
-      returnData[i][j + 1] = temp[1];
-      returnData[i][j + 2] = temp[3];
+    for(j = 0; j < this->width; j++){
+      temp = (this->data[i][j]).getColor();
+      returnData[a][b] = temp[0];
+      returnData[a][b + 1] = temp[1];
+      returnData[a][b + 2] = temp[3];
+      a++;
+      b = b + 3;
     }
   }
   return returnData;
@@ -54,9 +65,9 @@ void scene::acquireData(std::string name){
   bool follow = false;
   char type = '\0';
 
-  light lTemp = new light();
-  sphere spTemp = new sphere();
-  plane pTemp = new plane();
+  light lTemp = light();
+  sphere spTemp = sphere();
+  plane pTemp = plane();
 
   float temp[3];
   int line = 0;
@@ -71,7 +82,7 @@ void scene::acquireData(std::string name){
       type = parse.at(0);
       follow = false;
     } else follow  = true;
-    istringstream iss(parse);
+    std::istringstream iss(parse);
     switch(type){
       case 'e':
         iss >> eye[0];
@@ -92,7 +103,7 @@ void scene::acquireData(std::string name){
         iss >> angle;
       break;
       case 'i':
-        iss >> width
+        iss >> width;
         iss >> height;
       break;
       case 'L':
@@ -178,36 +189,39 @@ void scene::acquireData(std::string name){
 }
 
 void scene::makeData(){
-  this->data = new pixel[this->height][this->width];
+  this->data = new pixel*[this->height];
   int i, j, k, loc;
   float temp[3];
-  float eye[3] = this->eye;
-  float lookat[3] = this->lookat;
-  float up[3] = this->up;
-  float dist = powf((powf(eye[0] - lookat[0], 2) + (powf(eye[1] - lookat[1], 2) + (powf(eye[2] - lookat[2], 2)), 0.5);
-  if(up[0] > 0.0){
-    float w[3] = [0 0 -1];
-    float u[3] = [0 1 0];
-  } else if (up[1] > 0.0){
-    float w[3] = [0 0 -1];
-    float u[3] = [1 0 0];
+  float w[3] = {0};
+  float u[3] = {0};
+  float dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
+  /*if(this->up[0] > 0.0){
+    w[3] = {0, 0, -1};
+    u[3] = {0, 1, 0};
+  } else if (this->up[1] > 0.0){
+    w[3] = {0, 0, -1};
+    u[3] = {1, 0, 0};
   } else {
-    float w[3] = [0 -1 0];
-    float u[3] = [1 0 0];
+    w[3] = {0, -1, 0};
+    u[3] = {1, 0, 0};
+  }*/
+
+  for(i = 0; i < this->height; i++){
+    this->data[i] = new pixel[width];
   }
 
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->width; j++){
       //send ray for this pixel
-      ray rTemp = new ray();
-      rTemp.setOrigin(eye);
-      temp[0] = (-1 * dist * w[0]) + (i * u[0]) + (j * up[0]);
-      temp[1] = (-1 * dist * w[1]) + (i * u[1]) + (j * up[1]);
-      temp[2] = (-1 * dist * w[2]) + (i * u[2]) + (j * up[2]);
+      ray rTemp = ray();
+      rTemp.setOrigin(this->eye);
+      temp[0] = (-1 * dist * w[0]) + (i * u[0]) + (j * this->up[0]);
+      temp[1] = (-1 * dist * w[1]) + (i * u[1]) + (j * this->up[1]);
+      temp[2] = (-1 * dist * w[2]) + (i * u[2]) + (j * this->up[2]);
       rTemp.setDirection(temp);
       //calculate collision
-      for(k = 0; k < surf.size(); k++){
-        if(surf.at(k).detectCollison(&rTemp)){
+      for(k = 0; (unsigned int)k < surf.size(); k++){
+        if(surf.at(k).detectCollision(&rTemp)){
           loc = k;
         }
       }

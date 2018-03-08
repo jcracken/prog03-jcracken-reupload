@@ -5,23 +5,22 @@
 #include "ray.h"
 
 class surface {
-  private:
+  public:
     color ambient;
     color diffuse;
     color specular;
     float phong;
     float pos[3];
     bool type;
-  public:
     surface();
     color getAmbient();
     color getDiffuse();
     color getSpecular();
     float getPhong();
     float* getPos();
-    void setAmbient(color ambient);
-    void setDiffuse(color diffuse);
-    void setSpecular(color specular);
+    void setAmbient(float* ambient);
+    void setDiffuse(float* diffuse);
+    void setSpecular(float* specular);
     void setPhong(float phong);
     void setPos(float* pos);
     bool isSphere();

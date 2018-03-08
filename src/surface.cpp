@@ -1,11 +1,13 @@
 #include "surface.h"
 
 surface::surface(){
-  this->ambient = new color();
-  this->diffuse = new color();
-  this->specular = new color();
+  this->ambient = color();
+  this->diffuse = color();
+  this->specular = color();
   this->phong = 0.0;
-  this->pos = [0.0 0.0 0.0];
+  this->pos[0] = 0.0;
+  this->pos[1] = 0.0;
+  this->pos[2] = 0.0;
   this->type = false;
 }
 
@@ -55,4 +57,7 @@ bool surface::isSphere(){
   return this->type;
 }
 
-bool detectCollision(ray* inter);
+bool surface::detectCollision(ray* inter){
+  //potatoes
+  return true;
+}

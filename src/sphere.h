@@ -2,6 +2,8 @@
 #define SPHERE_H
 
 #include "surface.h"
+#include <math.h>
+#include <utility>
 
 class sphere: public surface {
   private:
@@ -11,5 +13,6 @@ class sphere: public surface {
     void setRadius(float radius);
     float getRadius();
     void setType();
+    bool detectCollision(ray* inter);
 };
 #endif

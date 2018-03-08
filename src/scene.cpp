@@ -13,7 +13,6 @@ scene::scene(){
   this->up[1] = 0.0;
   this->up[2] = 0.0;
   this->angle = 0.0;
-  this->pixelLocCalc = false;
 }
 
 float** scene::returnData(){
@@ -189,17 +188,29 @@ void scene::acquireData(std::string name){
   }
 }
 
-void scene::createPixelLoc(float* w, float* u, float* v){
+void scene::createPixelLoc(float* w, float* u, float* v, float dist){
   int i, j;
-  float u, v, r, t, l, b, dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
-  this->pixelLoc = new float*[this->height];
+  float uVar, vVar, r, t, l, b;
+  ray thisShouldBeStatic = ray();
+  this->pixelLoc = new float**[this->height];
   for(i = 0; i < this->height; i++){
-    this->pixelLoc[i] = new float[this->width];
+    this->pixelLoc[i] = new float*[this->width];
   }
+
+  float imageHeight = std::tan(this->angle / 2.0) * dist;
+  float imageWidth = std::tan(this->angle / 2.0) * dist; //probably change
+  r = thisShouldBeStatic.dotProduct(this->lookat, u) + imageWidth / 2.0;
+  l = thisShouldBeStatic.dotProduct(this->lookat, u) - imageWidth / 2.0;
+  t = thisShouldBeStatic.dotProduct(this->lookat, v) + imageHeight / 2.0;
+  b = thisShouldBeStatic.dotProduct(this->lookat, v) - imageHeight / 2.0;
+
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->height; j++){
-      u = i;
-      v = j;
+      uVar = l + (r - l) * (i + 0.5) / (this->width);
+      vVar = b + (t - b) * (j + 0.5) / (this->height);
+      this->pixelLoc[i][j][0] = -1 * dist * w[0] + uVar * u[0] + vVar * v[0];
+      this->pixelLoc[i][j][1] = -1 * dist * w[1] + uVar * u[1] + vVar * v[1];
+      this->pixelLoc[i][j][2] = -1 * dist * w[2] + uVar * u[2] + vVar * v[2];
     }
   }
 }
@@ -211,25 +222,16 @@ void scene::makeData(){
   float w[3] = {0};
   float u[3] = {0};
   float v[3] = {0};
-  /*if(this->up[0] > 0.0){
-    w[3] = {0, 0, -1};
-    u[3] = {0, 1, 0};
-  } else if (this->up[1] > 0.0){
-    w[3] = {0, 0, -1};
-    u[3] = {1, 0, 0};
-  } else {
-    w[3] = {0, -1, 0};
-    u[3] = {1, 0, 0};
-  }*/
+
+  //calculate u, v, w
+
+  float dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
 
   for(i = 0; i < this->height; i++){
     this->data[i] = new pixel[width];
   }
 
-  if(!this->pixelLocCalc){
-    createPixelLoc(w, u, v);
-    this->pixelLocCalc = true;
-  }
+  createPixelLoc(w, u, v, dist);
 
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->width; j++){

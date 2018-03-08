@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <string>
 #include <math.h>
+#include <cmath>
 #include <vector>
 
 class scene {
@@ -30,8 +31,7 @@ class scene {
     std::vector<light> lights;
     std::vector<surface> surf;
     std::vector<ray> rays;
-    float** pixelLoc;
-    bool pixelLocCalc;
+    float*** pixelLoc;
   public:
     scene();
     int returnWidth();
@@ -43,6 +43,6 @@ class scene {
     float returnAngle();
     void acquireData(std::string name);
     void makeData();
-    void createPixelLoc(float* w, float* u, float* v);
+    void createPixelLoc(float* w, float* u, float* v, float dist);
 };
 #endif

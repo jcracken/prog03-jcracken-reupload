@@ -17,6 +17,7 @@
 #include <math.h>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 
 class scene {
   private:

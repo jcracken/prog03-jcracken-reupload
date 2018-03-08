@@ -30,6 +30,8 @@ class scene {
     std::vector<light> lights;
     std::vector<surface> surf;
     std::vector<ray> rays;
+    float** pixelLoc;
+    bool pixelLocCalc;
   public:
     scene();
     int returnWidth();
@@ -41,5 +43,6 @@ class scene {
     float returnAngle();
     void acquireData(std::string name);
     void makeData();
+    void createPixelLoc(float* w, float* u, float* v);
 };
 #endif

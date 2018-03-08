@@ -13,6 +13,7 @@ scene::scene(){
   this->up[1] = 0.0;
   this->up[2] = 0.0;
   this->angle = 0.0;
+  this->pixelLocCalc = false;
 }
 
 float** scene::returnData(){
@@ -188,13 +189,28 @@ void scene::acquireData(std::string name){
   }
 }
 
+void scene::createPixelLoc(float* w, float* u, float* v){
+  int i, j;
+  float u, v, r, t, l, b, dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
+  this->pixelLoc = new float*[this->height];
+  for(i = 0; i < this->height; i++){
+    this->pixelLoc[i] = new float[this->width];
+  }
+  for(i = 0; i < this->height; i++){
+    for(j = 0; j < this->height; j++){
+      u = i;
+      v = j;
+    }
+  }
+}
+
 void scene::makeData(){
   this->data = new pixel*[this->height];
   int i, j, k, loc;
   float temp[3];
   float w[3] = {0};
   float u[3] = {0};
-  float dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
+  float v[3] = {0};
   /*if(this->up[0] > 0.0){
     w[3] = {0, 0, -1};
     u[3] = {0, 1, 0};
@@ -210,15 +226,17 @@ void scene::makeData(){
     this->data[i] = new pixel[width];
   }
 
+  if(!this->pixelLocCalc){
+    createPixelLoc(w, u, v);
+    this->pixelLocCalc = true;
+  }
+
   for(i = 0; i < this->height; i++){
     for(j = 0; j < this->width; j++){
       //send ray for this pixel
       ray rTemp = ray();
       rTemp.setOrigin(this->eye);
-      temp[0] = (-1 * dist * w[0]) + (i * u[0]) + (j * this->up[0]);
-      temp[1] = (-1 * dist * w[1]) + (i * u[1]) + (j * this->up[1]);
-      temp[2] = (-1 * dist * w[2]) + (i * u[2]) + (j * this->up[2]);
-      rTemp.setDirection(temp);
+      rTemp.setDirection(this->pixelLoc[i][j]);
       //calculate collision
       for(k = 0; (unsigned int)k < surf.size(); k++){
         if(surf.at(k).detectCollision(&rTemp)){

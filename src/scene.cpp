@@ -263,6 +263,7 @@ void scene::makeData(){
       //  temp[1] = temp[1] + surf.at(loc).getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getColor().getColor()[1] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
       //  temp[2] = temp[2] + surf.at(loc).getDiffuse().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getColor().getColor()[2] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
       }
+      data[i][j].setColor(temp);
     }
   }
 }

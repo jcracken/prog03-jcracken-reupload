@@ -40,4 +40,5 @@ class scene {
     float returnAngle();
     void acquireData(std::string name);
     void makeData();
-}
+};
+#endif

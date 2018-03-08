@@ -13,4 +13,5 @@ class light {
     void setCol(float* col);
     float getLoc();
     color getCol();
-}
+};
+#endif

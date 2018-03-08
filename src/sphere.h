@@ -11,4 +11,5 @@ class sphere: public surface {
     void setRadius(float radius);
     float getRadius();
     void setType();
-}
+};
+#endif

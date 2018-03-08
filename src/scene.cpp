@@ -191,7 +191,7 @@ void scene::acquireData(std::string name){
 void scene::createPixelLoc(float* w, float* u, float* v, float dist){
   int i, j;
   float uVar, vVar, r, t, l, b;
-  ray thisShouldBeStatic = ray();
+  ray thisShouldBeStatic = ray(); //needed because my compilier throws a fit whenever i try to use static functions
   this->pixelLoc = new float**[this->height];
   for(i = 0; i < this->height; i++){
     this->pixelLoc[i] = new float*[this->width];
@@ -220,7 +220,7 @@ void scene::makeData(){
   int i, j, k, loc;
   float temp[3];
   float *w, *u, *v;
-  ray r = ray();
+  ray r = ray(); //needed because my compilier throws a fit whenever i try to use static functions
 
   //calculate u, v, w
   w[0] = -1.0 * this->lookat[0] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
@@ -255,13 +255,13 @@ void scene::makeData(){
         }
       }
       //calculate color
-      temp[0] = surf.at(loc).getAmbient()[0] * 0.65;
-      temp[1] = surf.at(loc).getAmbient()[1] * 0.65;
-      temp[2] = surf.at(loc).getAmbient()[2] * 0.65;
+      temp[0] = surf.at(loc).getAmbient().getColor()[0] * 0.65;
+      temp[1] = surf.at(loc).getAmbient().getColor()[1] * 0.65;
+      temp[2] = surf.at(loc).getAmbient().getColor()[2] * 0.65;
       for(k = 0; (unsigned int)k < lights.size() k++){ //need to add normals
-        temp[0] = temp[0] + surf.at(loc).getDiffuse()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular()[0] * lights.at(k).getColor().getColor()[0] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
-        temp[0] = temp[1] + surf.at(loc).getDiffuse()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular()[1] * lights.at(k).getColor().getColor()[1] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
-        temp[0] = temp[2] + surf.at(loc).getDiffuse()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular()[2] * lights.at(k).getColor().getColor()[2] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
+        temp[0] = temp[0] + surf.at(loc).getDiffuse().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular().getColor()[0] * lights.at(k).getColor().getColor()[0] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
+        temp[0] = temp[1] + surf.at(loc).getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getColor().getColor()[1] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
+        temp[0] = temp[2] + surf.at(loc).getDiffuse().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )) + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getColor().getColor()[2] * powf(std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), )), surf.at(k).getPhong());
       }
     }
   }

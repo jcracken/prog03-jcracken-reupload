@@ -238,6 +238,7 @@ void scene::makeData(){
   this->data = new pixel*[this->height];
   int i, j, k, m, s, loc;
   float temp[3] = {0};
+  float areaLight[3] = {0};
   float *w, *u, *v;
   ray r = ray(); //needed because my compilier throws a fit whenever i try to use static functions
   bool shadow = false;
@@ -245,6 +246,8 @@ void scene::makeData(){
   std::random_device rd;
   std::mt19937 gen{rd()};
   std::uniform_real_distribution<> dis(-0.5, 0.5);
+  std::uniform_real_distribution<> lis(0.0, 1.0);
+  float lightAlpha, lightBeta;
 
   //calculate u, v, w
   w[0] = -1.0 * this->lookat[0] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
@@ -291,11 +294,16 @@ void scene::makeData(){
           pointHit[0] = (this->eye[0] + rTemp.getT() * anti[0]);
           pointHit[1] = (this->eye[1] + rTemp.getT() * anti[1]);
           pointHit[2] = (this->eye[2] + rTemp.getT() * anti[2]);
-          for(m = 0; (unsigned int)m < surf.size(); m++){ //hard shadows
+          for(m = 0; (unsigned int)m < surf.size(); m++){
             if(m != loc){ //check all but current shape
               ray shadRay = ray();
               shadRay.setOrigin(pointHit);
-              shadRay.setDirection(lights.at(k).getLocation());
+              lightAlpha = lis(gen);
+              lightBeta = lis(gen); //multiple samples?
+              areaLight[0] = lights.at(k).getLocation()[0] + lightAlpha * lights.at(k).getA()[0] + lightBeta * lights.at(k).getB()[0];
+              areaLight[1] = lights.at(k).getLocation()[1] + lightAlpha * lights.at(k).getA()[1] + lightBeta * lights.at(k).getB()[1];
+              areaLight[2] = lights.at(k).getLocation()[2] + lightAlpha * lights.at(k).getA()[2] + lightBeta * lights.at(k).getB()[2];
+              shadRay.setDirection(areaLight);
               if(surf.at(m).detectCollision(&shadRay)) shadow = true;
             }
           }

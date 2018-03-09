@@ -33,6 +33,7 @@ class scene {
     std::vector<surface> surf;
     std::vector<ray> rays;
     float*** pixelLoc;
+    float* rayCast(ray r, float near, float far, int depth);
   public:
     scene();
     int returnWidth();

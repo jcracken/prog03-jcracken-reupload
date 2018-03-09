@@ -45,8 +45,19 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 int main(int argc, char** argv){
 
   ppm* image = new ppm();
+	scene* sc = new scene();
 
   //populate ppm
+	if(argc < 3){
+		cout << "usage: prog03 input output" << endl;
+		exit(EXIT_FAILURE);
+	}
+
+	sc.acquireData(argv[1]);
+	sc.makeData();
+	image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
+	image.setWidth(sc.returnWidth());
+	image.setHeight(sc.returnHeight());
 
   //Start up SDL and make sure it went ok
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -149,6 +160,7 @@ int main(int argc, char** argv){
 
 	//clear memory
 	delete image;
+	delete sc;
 
   return 0;
 }

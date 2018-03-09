@@ -291,7 +291,7 @@ void scene::makeData(){
           pointHit[0] = (this->eye[0] + rTemp.getT() * anti[0]);
           pointHit[1] = (this->eye[1] + rTemp.getT() * anti[1]);
           pointHit[2] = (this->eye[2] + rTemp.getT() * anti[2]);
-          for(m = 0; (unsigned int)m < surf.size(); m++){
+          for(m = 0; (unsigned int)m < surf.size(); m++){ //hard shadows
             if(m != loc){ //check all but current shape
               ray shadRay = ray();
               shadRay.setOrigin(pointHit);

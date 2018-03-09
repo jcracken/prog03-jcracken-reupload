@@ -320,7 +320,7 @@ float* scene::rayCast(ray r, int depth){
 
 void scene::makeData(){
   this->data = new pixel*[this->height];
-  int i, j, k, m, s, loc, depth = 0;
+  int i, j, k, m, s, loc;
   float temp[3] = {0};
   float areaLight[3] = {0};
   float normal[3];
@@ -396,34 +396,46 @@ void scene::makeData(){
               normal[1] = ((this->eye[1] + rTemp.getT() * anti[i][j][1]) - surf.at(loc).getPos()[1]) / sqrt(powf((this->eye[0] + rTemp.getT() * this->pixelLoc[i][j][0]) - surf.at(loc).getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * this->pixelLoc[i][j][1]) - surf.at(loc).getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * this->pixelLoc[i][j][2]) - surf.at(loc).getPos()[2], 2.0));
               normal[2] = ((this->eye[2] + rTemp.getT() * anti[i][j][2]) - surf.at(loc).getPos()[2]) / sqrt(powf((this->eye[0] + rTemp.getT() * this->pixelLoc[i][j][0]) - surf.at(loc).getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * this->pixelLoc[i][j][1]) - surf.at(loc).getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * this->pixelLoc[i][j][2]) - surf.at(loc).getPos()[2], 2.0));
 
-              r.setOrigin(pointHit);
+              if(surf.at(loc).getPhong() != 0.0){
+                r.setOrigin(pointHit);
+                if(lis(gen) < R0){
+                  newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[0];
+                  newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[1];
+                  newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[2];
+                } else {
+                  newDirec[0] = rTemp.getDirection()[0] - rTemp.dotProduct(rTemp.getDirection(), normal) * normal[0] / surf.at(loc).getPhong();
+                  newDirec[1] = rTemp.getDirection()[1] - rTemp.dotProduct(rTemp.getDirection(), normal) * normal[1] / surf.at(loc).getPhong();
+                  newDirec[2] = rTemp.getDirection()[2] - rTemp.dotProduct(rTemp.getDirection(), normal) * normal[2] / surf.at(loc).getPhong();
 
-              if(lis(gen) < R0){
-                newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[0];
-                newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[1];
-                newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[2];
-              } else {
-
+                  newDirec[0] = newDirec[0] - normal[0] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), normal), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                  newDirec[1] = newDirec[1] - normal[1] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), normal), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                  newDirec[2] = newDirec[2] - normal[2] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), normal), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                }
+                r.setDirection(newDirec);
               }
-
-              r.setDirection(newDirec);
 
               temp[0] = temp[0] + surf.at(loc).getDiffuse().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
               temp[1] = temp[1] + surf.at(loc).getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
               temp[2] = temp[2] + surf.at(loc).getDiffuse().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
             } else {
 
-              r.setOrigin(pointHit);
+              if(surf.at(loc).getPhong() != 0.0){
+                r.setOrigin(pointHit);
+                if(lis(gen) < R0){
+                  newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[0];
+                  newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[1];
+                  newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[2];
+                } else {
+                  newDirec[0] = rTemp.getDirection()[0] - rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[0] / surf.at(loc).getPhong();
+                  newDirec[1] = rTemp.getDirection()[1] - rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[1] / surf.at(loc).getPhong();
+                  newDirec[2] = rTemp.getDirection()[2] - rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[2] / surf.at(loc).getPhong();
 
-              if(lis(gen) < R0){
-                newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[0];
-                newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[1];
-                newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[2];
-              } else {
-
+                  newDirec[0] = newDirec[0] - surf.at(loc).getNormal()[0] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                  newDirec[1] = newDirec[1] - surf.at(loc).getNormal()[1] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                  newDirec[2] = newDirec[2] - surf.at(loc).getNormal()[2] * sqrt(1 - ((1 - powf(rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()), 2.0)) / powf(surf.at(loc).getPhong(), 2.0)));
+                }
+                r.setDirection(newDirec);
               }
-              
-              r.setDirection(newDirec);
 
               temp[0] = temp[0] + surf.at(loc).getDiffuse().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc).getNormal()));
               temp[1] = temp[1] + surf.at(loc).getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc).getNormal()));
@@ -437,21 +449,11 @@ void scene::makeData(){
           shadow = false;
         }
         if(surf.at(loc).getPhong() != 0.0){
+          dat = rayCast(r, 1);
 
-            dat = rayCast(r, depth + 1);
-
-            temp[0] = dat[0] + temp[0];
-            temp[1] = dat[1] + temp[1];
-            temp[2] = dat[2] + temp[2];
-          } else {
-            r.setDirection();
-
-            dat = rayCast(r, depth + 1);
-
-            temp[0] = dat[0] + temp[0];
-            temp[1] = dat[1] + temp[1];
-            temp[2] = dat[2] + temp[2];
-          }
+          temp[0] = dat[0] + temp[0];
+          temp[1] = dat[1] + temp[1];
+          temp[2] = dat[2] + temp[2];
         }
       }
       temp[0] = temp[0] / this->samples;

@@ -425,18 +425,17 @@ void scene::makeData(){
           }
           shadow = false;
         }
-        temp[0] = temp[0] / this->samples;
-        temp[1] = temp[1] / this->samples;
-        temp[2] = temp[2] / this->samples;
-
         dat = rayCast(r, depth + 1);
 
-        dat[0] = dat[0] + temp[0];
-        dat[1] = dat[1] + temp[1];
-        dat[2] = dat[2] + temp[2];
-
-        data[i][j].setColor(dat);
+        temp[0] = dat[0] + temp[0];
+        temp[1] = dat[1] + temp[1];
+        temp[2] = dat[2] + temp[2];
       }
+      temp[0] = temp[0] / this->samples;
+      temp[1] = temp[1] / this->samples;
+      temp[2] = temp[2] / this->samples;
+
+      data[i][j].setColor(dat);
     }
   }
 }

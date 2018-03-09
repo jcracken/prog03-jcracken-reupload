@@ -46,6 +46,7 @@ int main(int argc, char** argv){
 
   ppm* image = new ppm();
 	scene* sc = new scene();
+	bool up = false;
 
   //populate ppm
 	if(argc < 3){
@@ -134,15 +135,32 @@ int main(int argc, char** argv){
           break;
 					case SDLK_LEFT:
 						sc.moveLeft();
+						sc.makeData();
+						image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
+						image.setWidth(sc.returnWidth());
+						image.setHeight(sc.returnHeight());
+						up = true;
 					break;
 					case SDLK_RIGHT:
 						sc.moveRight();
+						sc.makeData();
+						image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
+						image.setWidth(sc.returnWidth());
+						image.setHeight(sc.returnHeight());
+						up = true;
 					break;
           default:
-            break;
+          break;
         }
       }
     }
+
+		if(up){
+			SDL_UpdateTexture(imageTexture, NULL, image->returnData(), 3*width);
+			renderTexture(imageTexture, rendererImage, 0, 0);
+			SDL_RenderPresent(rendererImage);
+			up = false;
+		}
 
     //Display the frame rate to stdout, as well as current gamma value
     const Uint64 end = SDL_GetPerformanceCounter();

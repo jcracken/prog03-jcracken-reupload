@@ -308,7 +308,7 @@ void scene::makeData(){
             }
           }
           if(!shadow){
-            float* half[3];
+            float* half[3]; //NONE OF THIS MATTERS LOL
             half[0] = (rTemp.getDirection()[0] + lights.at(k).getLocation()[0]) / sqrt(powf(rTemp.getDirection()[0] + lights.at(k).getLocation()[0], 2) + powf(rTemp.getDirection()[1] + lights.at(k).getLocation()[1], 2) + powf(rTemp.getDirection()[2] + lights.at(k).getLocation()[2], 2));
             half[1] = (rTemp.getDirection()[1] + lights.at(k).getLocation()[1]) / sqrt(powf(rTemp.getDirection()[0] + lights.at(k).getLocation()[0], 2) + powf(rTemp.getDirection()[1] + lights.at(k).getLocation()[1], 2) + powf(rTemp.getDirection()[2] + lights.at(k).getLocation()[2], 2));
             half[2] = (rTemp.getDirection()[2] + lights.at(k).getLocation()[2]) / sqrt(powf(rTemp.getDirection()[0] + lights.at(k).getLocation()[0], 2) + powf(rTemp.getDirection()[1] + lights.at(k).getLocation()[1], 2) + powf(rTemp.getDirection()[2] + lights.at(k).getLocation()[2], 2));

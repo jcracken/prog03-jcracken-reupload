@@ -45,5 +45,7 @@ class scene {
     void acquireData(std::string name);
     void makeData();
     void createPixelLoc(float* w, float* u, float* v, float dist);
+    void moveLeft();
+    void moveRight();
 };
 #endif

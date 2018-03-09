@@ -131,7 +131,13 @@ int main(int argc, char** argv){
         switch (event.key.keysym.sym){
           case SDLK_ESCAPE:
             quit = true;
-            break;
+          break;
+					case SDLK_LEFT:
+						sc.moveLeft();
+					break;
+					case SDLK_RIGHT:
+						sc.moveRight();
+					break;
           default:
             break;
         }

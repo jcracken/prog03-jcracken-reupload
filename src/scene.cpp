@@ -332,3 +332,13 @@ void scene::makeData(){
     }
   }
 }
+
+void moveLeft(){
+  ray temp = ray();
+  this->eye[0] = this->eye[0] - 0.5;
+}
+
+void moveRight(){
+  ray temp = ray():
+  this->eye[0] = this->eye[0] + 0.5;
+}

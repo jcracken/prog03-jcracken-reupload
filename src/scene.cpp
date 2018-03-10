@@ -66,11 +66,12 @@ void scene::acquireData(std::string name){
   char type = '\0';
 
   light lTemp = light();
-  sphere spTemp = sphere();
-  plane pTemp = plane();
+  sphere *spTemp = new sphere();
+  plane *pTemp = new plane();
 
   float temp[3];
-  int line = 0, lineA = 0;
+  int line = 0;
+  int i = 0;
   //verifies file existence
   if(!(input.is_open())){
     std::cout << "File not found; try excluding the filename extension" << std::endl;
@@ -124,26 +125,27 @@ void scene::acquireData(std::string name){
           iss >> temp[2];
         }
         if(!follow){
-          pTemp.setPos(temp);
+          surf.push_back(new plane());
+          surf.at(i)->setPos(temp);
           iss >> temp[0];
           iss >> temp[1];
           iss >> temp[2];
-          pTemp.setNormal(temp);
+          surf.at(i)->setNormal(temp);
           line = 1;
         } else {
           if(line == 1){
-            pTemp.setAmbient(temp);
+            surf.at(i)->setAmbient(temp);
             line = 2;
           } else if (line == 2){
-            pTemp.setDiffuse(temp);
+            surf.at(i)->setDiffuse(temp);
             line = 3;
           } else if (line == 3){
-            pTemp.setSpecular(temp);
+            surf.at(i)->setSpecular(temp);
             line = 4;
           } else {
-            pTemp.setPhong(temp[0]);
+            surf.at(i)->setPhong(temp[0]);
             line = 0;
-            surf.push_back(pTemp);
+            i++;
           }
         }
       break;
@@ -154,25 +156,26 @@ void scene::acquireData(std::string name){
           iss >> temp[2];
         }
         if(!follow){
-          spTemp.setPos(temp);
+          surf.push_back(new plane());
+          surf.at(i)->setPos(temp);
           iss >> temp[0];
-          spTemp.setRadius(temp[0]);
+          spTemp->setRadius(temp[0]);
           line = 1;
         } else {
           if(line == 1){
-            spTemp.setAmbient(temp);
+            surf.at(i)->setAmbient(temp);
             line = 2;
           } else if (line == 2){
-            spTemp.setDiffuse(temp);
+            surf.at(i)->setDiffuse(temp);
             line = 3;
           } else if (line == 3){
-            spTemp.setSpecular(temp);
+            surf.at(i)->setSpecular(temp);
             line = 4;
           } else {
-            spTemp.setPhong(temp[0]);
+            surf.at(i)->setPhong(temp[0]);
             line = 0;
-            spTemp.setType();
-            surf.push_back(spTemp);
+            surf.at(i)->setType();
+            i++;
           }
         }
       break;
@@ -241,6 +244,7 @@ float* scene::rayCast(ray r, int depth){
   float newDirec[3] = {0};
   float t = 0;
   int loc, k, m;
+  bool shadow = false;
   std::random_device rd;
   std::mt19937 gen{rd()};
   std::uniform_real_distribution<> lis(0.0, 1.0);
@@ -252,7 +256,7 @@ float* scene::rayCast(ray r, int depth){
         loc = k;
       }
       for(k = 0; (unsigned int)k < lights.size(); k++){ //need to add normals
-        float* pointHit[3];
+        float pointHit[3];
         pointHit[0] = (r.getOrigin()[0] + r.getT() * r.getDirection()[0]);
         pointHit[1] = (r.getOrigin()[1] + r.getT() * r.getDirection()[1]);
         pointHit[2] = (r.getOrigin()[2] + r.getT() * r.getDirection()[2]);
@@ -262,43 +266,43 @@ float* scene::rayCast(ray r, int depth){
             shadRay.setOrigin(pointHit);
             lightAlpha = lis(gen);
             lightBeta = lis(gen); //multiple samples?
-            areaLight[0] = lights.at(k).getLocation()[0] + lightAlpha * lights.at(k).getA()[0] + lightBeta * lights.at(k).getB()[0];
-            areaLight[1] = lights.at(k).getLocation()[1] + lightAlpha * lights.at(k).getA()[1] + lightBeta * lights.at(k).getB()[1];
-            areaLight[2] = lights.at(k).getLocation()[2] + lightAlpha * lights.at(k).getA()[2] + lightBeta * lights.at(k).getB()[2];
+            areaLight[0] = lights.at(k).getLoc()[0] + lightAlpha * lights.at(k).getA()[0] + lightBeta * lights.at(k).getB()[0];
+            areaLight[1] = lights.at(k).getLoc()[1] + lightAlpha * lights.at(k).getA()[1] + lightBeta * lights.at(k).getB()[1];
+            areaLight[2] = lights.at(k).getLoc()[2] + lightAlpha * lights.at(k).getA()[2] + lightBeta * lights.at(k).getB()[2];
             shadRay.setDirection(areaLight);
             if(surf.at(m).detectCollision(&shadRay)) shadow = true;
           }
         }
         if(!shadow){
           if(surf.at(loc).isSphere()){
-            float* normal[3];
+            float normal[3];
             normal[0] = ((r.getOrigin()[0] + r.getT() * r.getDirection()[0]) - surf.at(loc).getPos()[0]) / sqrt(powf((r.getOrigin()[0] + r.getT() * r.getDirection()[0]) - surf.at(loc).getPos()[0], 2) + powf((r.getOrigin()[1] + r.getT() * r.getDirection()[1]) - surf.at(loc).getPos()[1], 2) + powf((r.getOrigin()[2] + r.getT() * r.getDirection()[2]) - surf.at(loc).getPos()[2], 2));
             normal[1] = ((r.getOrigin()[1] + r.getT() * r.getDirection()[1]) - surf.at(loc).getPos()[1]) / sqrt(powf((r.getOrigin()[0] + r.getT() * r.getDirection()[0]) - surf.at(loc).getPos()[0], 2) + powf((r.getOrigin()[1] + r.getT() * r.getDirection()[1]) - surf.at(loc).getPos()[1], 2) + powf((r.getOrigin()[2] + r.getT() * r.getDirection()[2]) - surf.at(loc).getPos()[2], 2));
             normal[2] = ((r.getOrigin()[2] + r.getT() * r.getDirection()[2]) - surf.at(loc).getPos()[2]) / sqrt(powf((r.getOrigin()[0] + r.getT() * r.getDirection()[0]) - surf.at(loc).getPos()[0], 2) + powf((r.getOrigin()[1] + r.getT() * r.getDirection()[1]) - surf.at(loc).getPos()[1], 2) + powf((r.getOrigin()[2] + r.getT() * r.getDirection()[2]) - surf.at(loc).getPos()[2], 2));
 
-            newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[0];
-            newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[1];
-            newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[2];
+            newDirec[0] = r.getDirection()[0] - 2 * r.dotProduct(r.getDirection(), normal) * normal[0];
+            newDirec[1] = r.getDirection()[1] - 2 * r.dotProduct(r.getDirection(), normal) * normal[1];
+            newDirec[2] = r.getDirection()[2] - 2 * r.dotProduct(r.getDirection(), normal) * normal[2];
 
             nu.setOrigin(pointHit);
             nu.setDirection(newDirec);
 
-            temp[0] = temp[0] + surf.at(loc).getSpecular().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
-            temp[1] = temp[1] + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
-            temp[2] = temp[2] + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
+            temp[0] = temp[0] + surf.at(loc).getSpecular().getColor()[0] * lights.at(k).getCol().getColor()[0] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), normal));
+            temp[1] = temp[1] + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getCol().getColor()[1] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), normal));
+            temp[2] = temp[2] + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getCol().getColor()[2] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), normal));
 
           } else {
 
-            newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[0];
-            newDirec[1] = rTemp.getDirection()[1] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[1];
-            newDirec[2] = rTemp.getDirection()[2] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc).getNormal()) * normal[2];
+            newDirec[0] = r.getDirection()[0] - 2 * r.dotProduct(r.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[0];
+            newDirec[1] = r.getDirection()[1] - 2 * r.dotProduct(r.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[1];
+            newDirec[2] = r.getDirection()[2] - 2 * r.dotProduct(r.getDirection(), surf.at(loc).getNormal()) * surf.at(loc).getNormal()[2];
 
             r.setOrigin(pointHit);
             r.setDirection(newDirec);
 
-            temp[0] = temp[0] + surf.at(loc).getSpecular().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc).getNormal()));
-            temp[1] = temp[1] + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc).getNormal()));
-            temp[2] = temp[2] + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc).getNormal()));
+            temp[0] = temp[0] + surf.at(loc).getSpecular().getColor()[0] * lights.at(k).getCol().getColor()[0] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), surf.at(loc).getNormal()));
+            temp[1] = temp[1] + surf.at(loc).getSpecular().getColor()[1] * lights.at(k).getCol().getColor()[1] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), surf.at(loc).getNormal()));
+            temp[2] = temp[2] + surf.at(loc).getSpecular().getColor()[2] * lights.at(k).getCol().getColor()[2] * std::max((float)0.0, r.dotProduct(lights.at(k).getLoc(), surf.at(loc).getNormal()));
 
           }
         } else {

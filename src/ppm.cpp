@@ -83,9 +83,10 @@ void ppm::setData(unsigned char* data){
   this->data = data;
 }
 
-void ppm::setData(float* data, int height, int width){
-  int i, j;
+void ppm::setData(float** data, int height, int width){
+  int i, j, k = 0;
   float min = data[0][0];
+  unsigned char tempData[height][width];
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
       if(data[i][j] < min) min = data[i][j];
@@ -94,9 +95,11 @@ void ppm::setData(float* data, int height, int width){
   if(min < 0.0) min = 0.0;
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
-      this->data[i][j] = data[i][j] * 255;
-      if(this->data[i][j] < 0) this->data[i][j] = 0;
-      if(this->data[i][j] > 255) this->data[i][j] = 255;
+      tempData[i][j] = data[i][j] * 255;
+      if(tempData[i][j] < 0) tempData[i][j] = 0;
+      if(tempData[i][j] > 255) tempData[i][j] = 255;
+      this->data[k] = tempData[i][j];
+      k++;
     }
   }
 }

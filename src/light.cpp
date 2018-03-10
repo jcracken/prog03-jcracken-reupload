@@ -5,8 +5,12 @@ light::light(){
   this->loc[1] = 0.0;
   this->loc[2] = 0.0;
   this->col = color();
-  this->a = {0};
-  this->b = {0};
+  this->a[0] = 0.0;
+  this->a[1] = 0.0;
+  this->a[2] = 0.0;
+  this->b[0] = 0.0;
+  this->b[1] = 0.0;
+  this->b[2] = 0.0;
 }
 
 void light::setLoc(float* loc){
@@ -39,10 +43,10 @@ void light::setB(float* b){
   this->b[2] = b[2];
 }
 
-float* getA(){
+float* light::getA(){
   return this->a;
 }
 
-float* getB(){
+float* light::getB(){
   return this->b;
 }

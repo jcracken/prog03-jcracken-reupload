@@ -1,8 +1,8 @@
 //include SDL2 libraries
 #include <SDL.h>
-#include "pixel.h"
 #include "ray.h"
 #include "ppm.h"
+#include "scene.h"
 
 //C++ includes
 #include <iostream>
@@ -50,7 +50,7 @@ int main(int argc, char** argv){
 
   //populate ppm
 	if(argc < 3){
-		cout << "usage: prog03 input output" << endl;
+		std::cout << "usage: prog03 input output" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -136,17 +136,13 @@ int main(int argc, char** argv){
 					case SDLK_LEFT:
 						sc.moveLeft();
 						sc.makeData();
-						image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
-						image.setWidth(sc.returnWidth());
-						image.setHeight(sc.returnHeight());
+						image->setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
 						up = true;
 					break;
 					case SDLK_RIGHT:
 						sc.moveRight();
 						sc.makeData();
-						image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
-						image.setWidth(sc.returnWidth());
-						image.setHeight(sc.returnHeight());
+						image->setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
 						up = true;
 					break;
           default:

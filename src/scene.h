@@ -18,6 +18,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <random>
 
 class scene {
   private:
@@ -30,10 +31,10 @@ class scene {
     int samples;
     pixel** data;
     std::vector<light> lights;
-    std::vector<surface> surf;
+    std::vector<surface*> surf;
     std::vector<ray> rays;
     float*** pixelLoc;
-    float* rayCast(ray r, float near, float far, int depth);
+    float* rayCast(ray r, int depth);
   public:
     scene();
     int returnWidth();

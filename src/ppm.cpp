@@ -85,8 +85,11 @@ void ppm::setData(unsigned char* data){
 
 void ppm::setData(float** data, int height, int width){
   int i, j, k = 0;
-  float min = data[0][0];
-  unsigned char tempData[height][width];
+  float min = -5000.0;
+  unsigned char** tempData = new unsigned char*[height];
+  for (i = 0; i < height; i++) {
+	  tempData[i] = new unsigned char[width];
+  }
   for(i = 0; i < height; i++){
     for(j = 0; j < width; j++){
       if(data[i][j] < min) min = data[i][j];

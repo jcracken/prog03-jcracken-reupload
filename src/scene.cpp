@@ -76,136 +76,148 @@ void scene::acquireData(std::string name){
     exit(EXIT_FAILURE);
   }
   while(!input.eof()){
-    getline(input, parse);
-    if(parse.at(0) >= 65 && parse.at(0) <= 122){
-      type = parse.at(0);
-      follow = false;
-    } else follow  = true;
-    std::istringstream iss(parse);
-    switch(type){
-      case 'e':
-        iss >> eye[0];
-        iss >> eye[1];
-        iss >> eye[2];
-      break;
-      case 'l':
-        iss >> lookat[0];
-        iss >> lookat[1];
-        iss >> lookat[2];
-      break;
-      case 'u':
-        iss >> up[0];
-        iss >> up[1];
-        iss >> up[2];
-      break;
-      case 'f':
-        iss >> angle;
-      break;
-      case 'i':
-        iss >> width;
-        iss >> height;
-      break;
-      case 'L':
-        iss >> temp[0];
-        iss >> temp[1];
-        iss >> temp[2];
-        if(!follow){
-          lTemp.setLoc(temp);
-        } else {
-          lTemp.setCol(temp);
-          lights.push_back(lTemp);
-        }
-      break;
-      case 'P':
-        iss >> temp[0];
-        if(line != 4) {
-          iss >> temp[1];
-          iss >> temp[2];
-        }
-        if(!follow){
-          surf.push_back(new plane());
-          surf.at(i)->setPos(temp);
-          iss >> temp[0];
-          iss >> temp[1];
-          iss >> temp[2];
-          surf.at(i)->setNormal(temp);
-          line = 1;
-        } else {
-          if(line == 1){
-            surf.at(i)->setAmbient(temp);
-            line = 2;
-          } else if (line == 2){
-            surf.at(i)->setDiffuse(temp);
-            line = 3;
-          } else if (line == 3){
-            surf.at(i)->setSpecular(temp);
-            line = 4;
-          } else {
-            surf.at(i)->setPhong(temp[0]);
-            line = 0;
-            i++;
-          }
-        }
-      break;
-      case 'S':
-        iss >> temp[0];
-        if(line != 4) {
-          iss >> temp[1];
-          iss >> temp[2];
-        }
-        if(!follow){
-          surf.push_back(new plane());
-          surf.at(i)->setPos(temp);
-          iss >> temp[0];
-          surf.at(i)->setRadius(temp[0]);
-          line = 1;
-        } else {
-          if(line == 1){
-            surf.at(i)->setAmbient(temp);
-            line = 2;
-          } else if (line == 2){
-            surf.at(i)->setDiffuse(temp);
-            line = 3;
-          } else if (line == 3){
-            surf.at(i)->setSpecular(temp);
-            line = 4;
-          } else {
-            surf.at(i)->setPhong(temp[0]);
-            line = 0;
-            surf.at(i)->setType();
-            i++;
-          }
-        }
-      break;
-      case 's':
-        iss >> this->samples;
-      break;
-      case 'A':
-        iss >> temp[0];
-        iss >> temp[1];
-        iss >> temp[2];
-        if(!follow){
-          lTemp.setLoc(temp);
-          iss >> temp[0];
-          iss >> temp[1];
-          iss >> temp[2];
-          lTemp.setA(temp);
-          iss >> temp[0];
-          iss >> temp[1];
-          iss >> temp[2];
-          lTemp.setB(temp);
-        } else {
-          lTemp.setCol(temp);
-          lights.push_back(lTemp);
-        }
-      break;
-      default:
-        std::cout << "input file malformed" << std::endl;
-        exit(EXIT_FAILURE);
-      break;
+	  if (getline(input, parse)) {
+		  if (parse.at(0) >= 65 && parse.at(0) <= 122) {
+			  type = parse.at(0);
+			  follow = false;
+		  }
+		  else follow = true;
+		  std::istringstream iss(parse);
+		  switch (type) {
+		  case 'e':
+			  iss >> eye[0];
+			  iss >> eye[1];
+			  iss >> eye[2];
+			  break;
+		  case 'l':
+			  iss >> lookat[0];
+			  iss >> lookat[1];
+			  iss >> lookat[2];
+			  break;
+		  case 'u':
+			  iss >> up[0];
+			  iss >> up[1];
+			  iss >> up[2];
+			  break;
+		  case 'f':
+			  iss >> angle;
+			  break;
+		  case 'i':
+			  iss >> width;
+			  iss >> height;
+			  break;
+		  case 'L':
+			  iss >> temp[0];
+			  iss >> temp[1];
+			  iss >> temp[2];
+			  if (!follow) {
+				  lTemp.setLoc(temp);
+			  }
+			  else {
+				  lTemp.setCol(temp);
+				  lights.push_back(lTemp);
+			  }
+			  break;
+		  case 'P':
+			  iss >> temp[0];
+			  if (line != 4) {
+				  iss >> temp[1];
+				  iss >> temp[2];
+			  }
+			  if (!follow) {
+				  surf.push_back(new plane());
+				  surf.at(i)->setPos(temp);
+				  iss >> temp[0];
+				  iss >> temp[1];
+				  iss >> temp[2];
+				  surf.at(i)->setNormal(temp);
+				  line = 1;
+			  }
+			  else {
+				  if (line == 1) {
+					  surf.at(i)->setAmbient(temp);
+					  line = 2;
+				  }
+				  else if (line == 2) {
+					  surf.at(i)->setDiffuse(temp);
+					  line = 3;
+				  }
+				  else if (line == 3) {
+					  surf.at(i)->setSpecular(temp);
+					  line = 4;
+				  }
+				  else {
+					  surf.at(i)->setPhong(temp[0]);
+					  line = 0;
+					  i++;
+				  }
+			  }
+			  break;
+		  case 'S':
+			  iss >> temp[0];
+			  if (line != 4) {
+				  iss >> temp[1];
+				  iss >> temp[2];
+			  }
+			  if (!follow) {
+				  surf.push_back(new plane());
+				  surf.at(i)->setPos(temp);
+				  iss >> temp[0];
+				  surf.at(i)->setRadius(temp[0]);
+				  line = 1;
+			  }
+			  else {
+				  if (line == 1) {
+					  surf.at(i)->setAmbient(temp);
+					  line = 2;
+				  }
+				  else if (line == 2) {
+					  surf.at(i)->setDiffuse(temp);
+					  line = 3;
+				  }
+				  else if (line == 3) {
+					  surf.at(i)->setSpecular(temp);
+					  line = 4;
+				  }
+				  else {
+					  surf.at(i)->setPhong(temp[0]);
+					  line = 0;
+					  surf.at(i)->setType();
+					  i++;
+				  }
+			  }
+			  break;
+		  case 's':
+			  iss >> this->samples;
+			  break;
+		  case 'A':
+			  iss >> temp[0];
+			  iss >> temp[1];
+			  iss >> temp[2];
+			  if (!follow) {
+				  lTemp.setLoc(temp);
+				  iss >> temp[0];
+				  iss >> temp[1];
+				  iss >> temp[2];
+				  lTemp.setA(temp);
+				  iss >> temp[0];
+				  iss >> temp[1];
+				  iss >> temp[2];
+				  lTemp.setB(temp);
+			  }
+			  else {
+				  lTemp.setCol(temp);
+				  lights.push_back(lTemp);
+			  }
+			  break;
+		  default:
+			  std::cout << "input file malformed" << std::endl;
+			  exit(EXIT_FAILURE);
+			  break;
+		}
     }
-    input.close();
   }
+  input.close();
 }
 
 void scene::createPixelLoc(float* w, float* u, float* v, float dist){
@@ -325,7 +337,8 @@ void scene::makeData(){
   float temp[3] = {0};
   float areaLight[3] = {0};
   float normal[3];
-  float *w, *u, *v, *dat;
+  float* w = new float[3];
+  float *u, *v, *dat;
   ray r = ray(); //needed because my compilier throws a fit whenever i try to use static functions
   bool shadow = false;
   float anti[3], newDirec[3];

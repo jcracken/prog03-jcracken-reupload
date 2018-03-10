@@ -54,11 +54,11 @@ int main(int argc, char** argv){
 		exit(EXIT_FAILURE);
 	}
 
-	sc.acquireData(argv[1]);
-	sc.makeData();
-	image.setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
-	image.setWidth(sc.returnWidth());
-	image.setHeight(sc.returnHeight());
+	sc->acquireData(argv[1]);
+	sc->makeData();
+	image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
+	image->setWidth(sc->returnWidth());
+	image->setHeight(sc->returnHeight());
 
   //Start up SDL and make sure it went ok
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -134,15 +134,15 @@ int main(int argc, char** argv){
             quit = true;
           break;
 					case SDLK_LEFT:
-						sc.moveLeft();
-						sc.makeData();
-						image->setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
+						sc->moveLeft();
+						sc->makeData();
+						image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
 						up = true;
 					break;
 					case SDLK_RIGHT:
-						sc.moveRight();
-						sc.makeData();
-						image->setData(sc.returnData(), sc.returnHeight(), sc.returnWidth() * 3);
+						sc->moveRight();
+						sc->makeData();
+						image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
 						up = true;
 					break;
           default:
@@ -152,7 +152,7 @@ int main(int argc, char** argv){
     }
 
 		if(up){
-			SDL_UpdateTexture(imageTexture, NULL, image->returnData(), 3*width);
+			SDL_UpdateTexture(imageTexture, NULL, image->returnData(), 3*image->returnWidth());
 			renderTexture(imageTexture, rendererImage, 0, 0);
 			SDL_RenderPresent(rendererImage);
 			up = false;

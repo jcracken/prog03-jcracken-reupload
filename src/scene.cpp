@@ -325,10 +325,10 @@ void scene::makeData(){
   float temp[3] = {0};
   float areaLight[3] = {0};
   float normal[3];
-  float *w, *u, *v;
+  float *w, *u, *v, *dat;
   ray r = ray(); //needed because my compilier throws a fit whenever i try to use static functions
   bool shadow = false;
-  float anti[3], newDirec[3], dat[3];
+  float anti[3], newDirec[3];
   std::random_device rd;
   std::mt19937 gen{rd()};
   std::uniform_real_distribution<> dis(-0.5, 0.5);
@@ -415,9 +415,9 @@ void scene::makeData(){
                 r.setDirection(newDirec);
               }
 
-              temp[0] = temp[0] + surf.at(loc)->getDiffuse().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
-              temp[1] = temp[1] + surf.at(loc)->getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
-              temp[2] = temp[2] + surf.at(loc)->getDiffuse().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), normal));
+              temp[0] = temp[0] + surf.at(loc)->getDiffuse().getColor()[0] * lights.at(k).getCol().getColor()[0] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), normal));
+              temp[1] = temp[1] + surf.at(loc)->getDiffuse().getColor()[1] * lights.at(k).getCol().getColor()[1] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), normal));
+              temp[2] = temp[2] + surf.at(loc)->getDiffuse().getColor()[2] * lights.at(k).getCol().getColor()[2] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), normal));
             } else {
 
               if(surf.at(loc)->getPhong() != 0.0){
@@ -438,9 +438,9 @@ void scene::makeData(){
                 r.setDirection(newDirec);
               }
 
-              temp[0] = temp[0] + surf.at(loc)->getDiffuse().getColor()[0] * lights.at(k).getColor().getColor()[0] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc)->getNormal()));
-              temp[1] = temp[1] + surf.at(loc)->getDiffuse().getColor()[1] * lights.at(k).getColor().getColor()[1] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc)->getNormal()));
-              temp[2] = temp[2] + surf.at(loc)->getDiffuse().getColor()[2] * lights.at(k).getColor().getColor()[2] * std::max(0, rTemp.dotProduct(lights.at(k).getLocation(), surf.at(loc)->getNormal()));
+              temp[0] = temp[0] + surf.at(loc)->getDiffuse().getColor()[0] * lights.at(k).getCol().getColor()[0] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), surf.at(loc)->getNormal()));
+              temp[1] = temp[1] + surf.at(loc)->getDiffuse().getColor()[1] * lights.at(k).getCol().getColor()[1] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), surf.at(loc)->getNormal()));
+              temp[2] = temp[2] + surf.at(loc)->getDiffuse().getColor()[2] * lights.at(k).getCol().getColor()[2] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), surf.at(loc)->getNormal()));
             }
           } else {
             temp[0] = 0.0;

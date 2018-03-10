@@ -1,6 +1,6 @@
 #include "surface.h"
 
-surface::surface(){
+surface::surface(){ //constructor
   this->ambient = color();
   this->diffuse = color();
   this->specular = color();
@@ -11,76 +11,76 @@ surface::surface(){
   this->type = false;
 }
 
-color surface::getAmbient(){
+color surface::getAmbient(){ //returns ambient color value
   return this->ambient;
 }
 
-color surface::getDiffuse(){
+color surface::getDiffuse(){ //returns diffuse color value
   return this->diffuse;
 }
 
-color surface::getSpecular(){
+color surface::getSpecular(){ //returns specular color value
   return this->specular;
 }
 
-float surface::getPhong(){
+float surface::getPhong(){ //returns phong exponent value
   return this->phong;
 }
 
-float* surface::getPos(){
+float* surface::getPos(){ //point where the surface is based (sphere center/plane loc)
   return this->pos;
 }
 
-void surface::setAmbient(float* ambient){
+void surface::setAmbient(float* ambient){ //update ambient color
   this->ambient.setColor(ambient);
 }
 
-void surface::setDiffuse(float* diffuse){
+void surface::setDiffuse(float* diffuse){ //update diffuse color
   this->diffuse.setColor(diffuse);
 }
 
-void surface::setSpecular(float* specular){
+void surface::setSpecular(float* specular){ //update specular color
   this->specular.setColor(specular);
 }
 
-void surface::setPhong(float phong){
+void surface::setPhong(float phong){ //update phong exponent
   this->phong = phong;
 }
 
-void surface::setPos(float* pos){
+void surface::setPos(float* pos){ //update position
   this->pos[0] = pos[0];
   this->pos[1] = pos[1];
   this->pos[2] = pos[2];
 }
 
-bool surface::isSphere(){
+bool surface::isSphere(){ //returns true if it's a sphere
   return this->type;
 }
 
-bool surface::detectCollision(ray* inter){
+bool surface::detectCollision(ray* inter){ //here because i can't call it for children otherwise apparently
   //potatoes
   return true;
 }
 
-void surface::setNormal(float* norm){
+void surface::setNormal(float* norm){ //see inside comment and above
   //why have polymorphism if it just makes things more complicated
 }
 
-void surface::setType(){
+void surface::setType(){ //set if it's a sphere or a plane
   this->type = true;
 }
 
-void surface::setRadius(float rad){
+void surface::setRadius(float rad){ //see above
   //sigh
 }
 
-float* surface::getNormal(){
+float* surface::getNormal(){ //see above
   //i hate everything
   float temp = 0.0;
   return &temp;
 }
 
-float surface::getRadius(){
+float surface::getRadius(){ //see above
   float radius = 0.0;
   return radius;
 }

@@ -44,23 +44,25 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 
 int main(int argc, char** argv){
 
-  ppm* image = new ppm();
+	//create vars for main
+	ppm* image = new ppm();
 	scene* sc = new scene();
 	bool up = false;
 
-  //populate ppm
+	//populate ppm
 	if(argc < 3){
 		std::cout << "usage: prog03 input output" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
+	//load in data and store it
 	sc->acquireData(argv[1]);
 	sc->makeData();
 	image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
 	image->setWidth(sc->returnWidth());
 	image->setHeight(sc->returnHeight());
 
-  //Start up SDL and make sure it went ok
+	//Start up SDL and make sure it went ok
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
 		logSDLError(std::cout, "SDL_Init");
 		return 1;
@@ -130,28 +132,28 @@ int main(int argc, char** argv){
       //Use number input to select which clip should be drawn
       if (event.type == SDL_KEYDOWN){
         switch (event.key.keysym.sym){
-          case SDLK_ESCAPE:
-            quit = true;
-          break;
-					case SDLK_LEFT:
-						sc->moveLeft();
-						sc->makeData();
-						image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
-						up = true;
-					break;
-					case SDLK_RIGHT:
-						sc->moveRight();
-						sc->makeData();
-						image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
-						up = true;
-					break;
-          default:
-          break;
+			case SDLK_ESCAPE: //if escape, quit
+				quit = true;
+			break;
+			case SDLK_LEFT: //if left arrow key, move eye left and forward
+				sc->moveLeft();
+				sc->makeData();
+				image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
+				up = true;
+			break;
+			case SDLK_RIGHT: //if right arrow key, move eye right and forward
+				sc->moveRight();
+				sc->makeData();
+				image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
+				up = true;
+			break;
+			default:
+			break;
         }
       }
     }
 
-		if(up){
+		if(up){ //if the image was updated
 			SDL_UpdateTexture(imageTexture, NULL, image->returnData(), 3*image->returnWidth());
 			renderTexture(imageTexture, rendererImage, 0, 0);
 			SDL_RenderPresent(rendererImage);

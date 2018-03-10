@@ -356,21 +356,26 @@ float* scene::rayCast(ray r, int depth){
 }
 
 void scene::makeData(){ //this is the rest of the ray cast code
-  this->data = new pixel*[this->height];
-  int i, j, k, m, s, loc;
-  float temp[3] = {0};
-  float areaLight[3] = {0};
-  float normal[3];
-  float* w = new float[3];
-  float *u, *v, *dat;
+
+  this->data = new pixel*[this->height]; //c++ hates init with non-static vars
+
+  int i, j, k, m, s, loc; //used in loops and other temp ways
+  float temp[3] = {0}; //temp data storage
+  float areaLight[3] = {0}; //used for lights
+  float normal[3]; //used for spheres
+  float* w = new float[3]; //w from basis
+  float *u, *v, *dat; //basis, stores data
+
   ray r = ray(); //needed because my compilier throws a fit whenever i try to use static functions
-  bool shadow = false;
-  float anti[3], newDirec[3];
-  std::random_device rd;
+
+  bool shadow = false; //shadow or not
+  float anti[3], newDirec[3]; //anti aliaising and ray for recursion
+
+  std::random_device rd; //random generation for shadows and antialiasing
   std::mt19937 gen{rd()};
   std::uniform_real_distribution<> dis(-0.5, 0.5);
   std::uniform_real_distribution<> lis(0.0, 1.0);
-  float lightAlpha, lightBeta, R0;
+  float lightAlpha, lightBeta, R0; //refraction or reflection
 
   //calculate u, v, w
   w[0] = -1.0 * this->lookat[0] / sqrt(powf(this->lookat[0],2) + powf(this->lookat[1],2) + powf(this->lookat[2],2));
@@ -386,15 +391,15 @@ void scene::makeData(){ //this is the rest of the ray cast code
 
   float dist = powf((powf(this->eye[0] - this->lookat[0], 2)) + (powf(this->eye[1] - this->lookat[1], 2)) + (powf(this->eye[2] - this->lookat[2], 2)), 0.5);
 
-  for(i = 0; i < this->height; i++){
+  for(i = 0; i < this->height; i++){ //cuz c++ hates non-static init
     this->data[i] = new pixel[width];
   }
 
-  createPixelLoc(w, u, v, dist);
+  createPixelLoc(w, u, v, dist); //creates 2d array with all of the pixel locations
 
-  for(i = 0; i < this->height; i++){
+  for(i = 0; i < this->height; i++){ //iterate through all pixels
     for(j = 0; j < this->width; j++){
-      for(s = 0; s < this->samples; s++){
+      for(s = 0; s < this->samples; s++){ //do each pixel s times
         //send ray for this pixel
         anti[0] = this->pixelLoc[i][j][0] + dis(gen);
         anti[1] = this->pixelLoc[i][j][1] + dis(gen);
@@ -408,8 +413,8 @@ void scene::makeData(){ //this is the rest of the ray cast code
             loc = k;
           }
         }
-        //calculate color
-        for(k = 0; (unsigned int)k < lights.size(); k++){ //need to add normals
+        //calculate color---pretty much the rest maps to the ray recursion function
+        for(k = 0; (unsigned int)k < lights.size(); k++){
           float pointHit[3];
           pointHit[0] = (this->eye[0] + rTemp.getT() * anti[0]);
           pointHit[1] = (this->eye[1] + rTemp.getT() * anti[1]);
@@ -428,13 +433,13 @@ void scene::makeData(){ //this is the rest of the ray cast code
             }
           }
           if(!shadow){
-            R0 = powf((surf.at(loc)->getPhong() - 1.0) / (surf.at(loc)->getPhong() + 1.0), 2.0);
+            R0 = powf((surf.at(loc)->getPhong() - 1.0) / (surf.at(loc)->getPhong() + 1.0), 2.0); //for reflection/refraction
             if(surf.at(loc)->isSphere()){
               normal[0] = ((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
               normal[1] = ((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
               normal[2] = ((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
 
-              if(surf.at(loc)->getPhong() != 0.0){
+              if(surf.at(loc)->getPhong() != 0.0){ //reflection/refraction
                 r.setOrigin(pointHit);
                 if(lis(gen) < R0){
                   newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), normal) * normal[0];
@@ -457,7 +462,7 @@ void scene::makeData(){ //this is the rest of the ray cast code
               temp[2] = temp[2] + surf.at(loc)->getDiffuse().getColor()[2] * lights.at(k).getCol().getColor()[2] * std::max((float)0.0, rTemp.dotProduct(lights.at(k).getLoc(), normal));
             } else {
 
-              if(surf.at(loc)->getPhong() != 0.0){
+              if(surf.at(loc)->getPhong() != 0.0){ //see above
                 r.setOrigin(pointHit);
                 if(lis(gen) < R0){
                   newDirec[0] = rTemp.getDirection()[0] - 2 * rTemp.dotProduct(rTemp.getDirection(), surf.at(loc)->getNormal()) * normal[0];
@@ -503,13 +508,13 @@ void scene::makeData(){ //this is the rest of the ray cast code
   }
 }
 
-void scene::moveLeft(){
+void scene::moveLeft(){ //move the eye left and forward
   ray temp = ray();
   this->eye[0] = this->eye[0] - 0.5;
   this->eye[2] = this->eye[2] + 0.5;
 }
 
-void scene::moveRight(){
+void scene::moveRight(){ //move the eye left and forward
   ray temp = ray();
   this->eye[0] = this->eye[0] + 0.5;
   this->eye[2] = this->eye[2] + 0.5;

@@ -393,9 +393,9 @@ void scene::makeData(){
           if(!shadow){
             R0 = powf((surf.at(loc)->getPhong() - 1.0) / (surf.at(loc)->getPhong() + 1.0), 2.0);
             if(surf.at(loc)->isSphere()){
-              normal[0] = ((this->eye[0] + rTemp.getT() * anti[i][j][0]) - surf.at(loc)->getPos()[0]) / sqrt(powf((this->eye[0] + rTemp.getT() * this->pixelLoc[i][j][0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * this->pixelLoc[i][j][1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * this->pixelLoc[i][j][2]) - surf.at(loc)->getPos()[2], 2.0));
-              normal[1] = ((this->eye[1] + rTemp.getT() * anti[i][j][1]) - surf.at(loc)->getPos()[1]) / sqrt(powf((this->eye[0] + rTemp.getT() * this->pixelLoc[i][j][0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * this->pixelLoc[i][j][1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * this->pixelLoc[i][j][2]) - surf.at(loc)->getPos()[2], 2.0));
-              normal[2] = ((this->eye[2] + rTemp.getT() * anti[i][j][2]) - surf.at(loc)->getPos()[2]) / sqrt(powf((this->eye[0] + rTemp.getT() * this->pixelLoc[i][j][0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * this->pixelLoc[i][j][1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * this->pixelLoc[i][j][2]) - surf.at(loc)->getPos()[2], 2.0));
+              normal[0] = ((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
+              normal[1] = ((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
+              normal[2] = ((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2]) / sqrt(powf((this->eye[0] + rTemp.getT() * anti[0]) - surf.at(loc)->getPos()[0], 2.0) + powf((this->eye[1] + rTemp.getT() * anti[1]) - surf.at(loc)->getPos()[1], 2.0) + powf((this->eye[2] + rTemp.getT() * anti[2]) - surf.at(loc)->getPos()[2], 2.0));
 
               if(surf.at(loc)->getPhong() != 0.0){
                 r.setOrigin(pointHit);

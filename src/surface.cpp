@@ -61,3 +61,26 @@ bool surface::detectCollision(ray* inter){
   //potatoes
   return true;
 }
+
+void surface::setNormal(float* norm){
+  //why have polymorphism if it just makes things more complicated
+}
+
+void surface::setType(){
+  this->type = true;
+}
+
+void surface::setRadius(float rad){
+  //sigh
+}
+
+float* surface::getNormal(){
+  //i hate everything
+  float temp = 0.0;
+  return &temp;
+}
+
+float surface::getRadius(){
+  float radius = 0.0;
+  return radius;
+}

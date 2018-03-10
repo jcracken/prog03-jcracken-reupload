@@ -25,5 +25,10 @@ class surface {
     void setPos(float* pos);
     bool isSphere();
     bool detectCollision(ray* inter);
+    void setNormal(float* norm);
+    void setType();
+    void setRadius(float rad);
+    float* getNormal();
+    float getRadius();
 };
 #endif

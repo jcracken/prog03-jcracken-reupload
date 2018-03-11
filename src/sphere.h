@@ -5,7 +5,7 @@
 #include <math.h>
 #include <utility>
 
-class sphere: public surface {
+class sphere: public surface { //child of surface
   private:
     float radius;
     bool solveQuadratic(float a, float b, float c, float* t0, float* t1);

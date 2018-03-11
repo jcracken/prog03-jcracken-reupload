@@ -147,6 +147,18 @@ int main(int argc, char** argv){
 				image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
 				up = true;
 			break;
+			case SDLK_UP:
+				sc->incSamples();
+				sc->makeData();
+				image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
+				up = true;
+			break;
+			case SDLK_DOWN:
+				sc->decSamples();
+				sc->makeData();
+				image->setData(sc->returnData(), sc->returnHeight(), sc->returnWidth() * 3);
+				up = true;
+			break;
 			default:
 			break;
         }

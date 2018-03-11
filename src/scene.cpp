@@ -519,3 +519,11 @@ void scene::moveRight(){ //move the eye left and forward
   this->eye[0] = this->eye[0] + 0.5;
   this->eye[2] = this->eye[2] + 0.5;
 }
+
+void scene::incSamples() {
+	this->samples = this->samples + 1;
+}
+
+void scene::decSamples() {
+	this->samples = this->samples - 1;
+}

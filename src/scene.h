@@ -49,5 +49,7 @@ class scene { //main class, used to ray trace and store color values
     void createPixelLoc(float* w, float* u, float* v, float dist);
     void moveLeft();
     void moveRight();
+	void incSamples();
+	void decSamples();
 };
 #endif

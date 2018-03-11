@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <random>
 
-class scene {
+class scene { //main class, used to ray trace and store color values
   private:
     int width;
     int height;
@@ -49,5 +49,7 @@ class scene {
     void createPixelLoc(float* w, float* u, float* v, float dist);
     void moveLeft();
     void moveRight();
+	void incSamples();
+	void decSamples();
 };
 #endif

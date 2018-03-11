@@ -1,6 +1,6 @@
 #include "light.h"
 
-light::light(){
+light::light(){ //constructor
   this->loc[0] = 0.0;
   this->loc[1] = 0.0;
   this->loc[2] = 0.0;
@@ -13,13 +13,13 @@ light::light(){
   this->b[2] = 0.0;
 }
 
-void light::setLoc(float* loc){
+void light::setLoc(float* loc){ //location of light
   this->loc[0] = loc[0];
   this->loc[1] = loc[1];
   this->loc[2] = loc[2];
 }
 
-void light::setCol(float* col){
+void light::setCol(float* col){ //color of light
   this->col.setColor(col);
 }
 
@@ -31,13 +31,13 @@ color light::getCol(){
   return this->col;
 }
 
-void light::setA(float* a){
+void light::setA(float* a){ //A vector for area lights
   this->a[0] = a[0];
   this->a[1] = a[1];
   this->a[2] = a[2];
 }
 
-void light::setB(float* b){
+void light::setB(float* b){ //B vector for area lights
   this->b[0] = b[0];
   this->b[1] = b[1];
   this->b[2] = b[2];

@@ -1,13 +1,13 @@
 #include "pixel.h"
 
-pixel::pixel(){
+pixel::pixel(){ //constructor
   this->pixColor = color();
 }
 
-float* pixel::getColor(){
+float* pixel::getColor(){ //return color values as float array
   return this->pixColor.getColor();
 }
 
-void pixel::setColor(float* color){
+void pixel::setColor(float* color){ //set color values as float array
   this->pixColor.setColor(color);
 }

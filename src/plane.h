@@ -3,7 +3,7 @@
 
 #include "surface.h"
 
-class plane: public surface {
+class plane: public surface { //child of surface
   private:
     float normal[3];
   public:

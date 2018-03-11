@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <random>
 
-class scene {
+class scene { //main class, used to ray trace and store color values
   private:
     int width;
     int height;

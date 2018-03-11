@@ -1,16 +1,16 @@
 #include "plane.h"
 
-float* plane::getNormal(){
+float* plane::getNormal(){ //get normal of plane
   return this->normal;
 }
 
-void plane::setNormal(float* normal){
+void plane::setNormal(float* normal){ //set normal
   this->normal[0] = normal[0];
   this->normal[1] = normal[1];
   this->normal[2] = normal[2];
 }
 
-bool plane::detectCollision(ray* inter){
+bool plane::detectCollision(ray* inter){ //run this to see if a ray collides with it
   float temp[3];
   float t, denom;
 

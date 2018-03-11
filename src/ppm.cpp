@@ -1,6 +1,6 @@
 #include "ppm.h"
 
-ppm::ppm(){
+ppm::ppm(){ //constructor
   this->data = NULL;
   this->width = 0;
   this->height = 0;
@@ -83,7 +83,7 @@ void ppm::setData(unsigned char* data){
   this->data = data;
 }
 
-void ppm::setData(float** data, int height, int width){
+void ppm::setData(float** data, int height, int width){ //if float array is passed in, convert to unsigned char first
   int i, j, k = 0;
   float min = -5000.0;
   unsigned char** tempData = new unsigned char*[height];
@@ -107,10 +107,10 @@ void ppm::setData(float** data, int height, int width){
   }
 }
 
-void ppm::setWidth(int width){
+void ppm::setWidth(int width){ //set width
   this->width = width;
 }
 
-void ppm::setHeight(int height){
+void ppm::setHeight(int height){ //set height
   this->height = height;
 }
